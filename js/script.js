@@ -192,30 +192,6 @@ const getDiscordOnlineUsers = async () => {
     }
 }
 
-const getDiscordOnlineUsers = async () => {
-    try {
-        const discordServerId = config.serverInfo.discordServerID;
-        const apiWidgetUrl = `https://discord.com/api/guilds/${discordServerId}/widget.json`;
-        
-        let response = await fetch(apiWidgetUrl);
-        
-        // Check if the response is OK
-        if (!response.ok) {
-            throw new Error('Network response was not ok: ' + response.statusText);
-        }
-
-        let data = await response.json();
-        
-        console.log("Discord API Response:", data); // Log the response for debugging
-
-        // Return presence count or a default message
-        return data.presence_count ? data.presence_count : "None";
-    } catch (e) {
-        console.error("Error fetching Discord online users:", e);
-        return "None"; // Return a fallback value on error
-    }
-}
-
 const getUuidByUsername = async (username) => {
     try {
         const usernameToUuidApi = `https://api.minetools.eu/uuid/${username}`;

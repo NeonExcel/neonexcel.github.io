@@ -184,17 +184,24 @@ const getDiscordOnlineUsers = async () => {
     }
 }
 
-const getMinecraftOnlinePlayer = async () => {
+const getDiscordOnlineUsers = async () => {
     try {
-        const serverIp = config.serverInfo.serverIp;
+        const discordServerId = config.serverInfo.discordServerID;
+        const apiWidgetUrl = `https://discord.com/api/guilds/${discordServerId}/widget.json`;
+        
+        let response = await fetch(apiWidgetUrl);
+        
+        // Check if the response is OK
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
 
-        const apiUrl = `https://api.mcsrvstat.us/2/${serverIp}`;
-        let response = await fetch(apiUrl);
         let data = await response.json();
 
-        return data.players.online;
+        // Check if presence_count exists
+        if (!data.presence_count) return "None";
+        else return data.presence_count; // No need for await here
     } catch (e) {
-        console.log(e);
         return "None";
     }
 }

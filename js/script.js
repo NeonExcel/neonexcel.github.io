@@ -172,22 +172,14 @@ const inputWithLocationAfterSubmit = document.querySelector(".location-after-sub
 const getDiscordOnlineUsers = async () => {
     try {
         const discordServerId = config.serverInfo.discordServerID;
-        const apiWidgetUrl = `https://discord.com/api/guilds/${discordServerId}/widget.json`;
-        
-        let response = await fetch(apiWidgetUrl);
-        
-        // Check if the response is OK
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
 
+        const apiWidgetUrl = `https://discord.com/api/guilds/${discordServerId}/widget.json`;
+        let response = await fetch(apiWidgetUrl);
         let data = await response.json();
 
-        // Check if presence_count exists
-        if (!data.presence_count) return "None";
-        else return data.presence_count; // No need for await here
+        if(!data.presence_count) return "None";
+        else return (await data.presence_count);
     } catch (e) {
-        console.error(e); // Optionally log the error for debugging
         return "None";
     }
 }

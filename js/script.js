@@ -201,16 +201,18 @@ const getDiscordOnlineUsers = async () => {
         
         // Check if the response is OK
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            throw new Error('Network response was not ok: ' + response.statusText);
         }
 
         let data = await response.json();
+        
+        console.log("Discord API Response:", data); // Log the response for debugging
 
-        // Check if presence_count exists
-        if (!data.presence_count) return "None";
-        else return data.presence_count; // No need for await here
+        // Return presence count or a default message
+        return data.presence_count ? data.presence_count : "None";
     } catch (e) {
-        return "None";
+        console.error("Error fetching Discord online users:", e);
+        return "None"; // Return a fallback value on error
     }
 }
 
